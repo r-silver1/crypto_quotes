@@ -20,4 +20,4 @@ Usage:<hr>
 </ul
 </span>
 
-<img src="ex_img.png" alt="example output">
+<img src="https://raw.githubusercontent.com/r-silver1/crypto_quotes/main/ex_img.PNG" alt="example output">
