@@ -1,4 +1,5 @@
 <h1> Quote_Tracker</h1>
+<img src="https://raw.githubusercontent.com/r-silver1/crypto_quotes/main/ex_img.PNG" alt="example output">
 <pre>
 Welcome to the crypto-quoter, Robert Silver 2021
     --Thank you to CoinPaprika API and to github user s0h3ck for their useful package
@@ -20,4 +21,4 @@ Usage:<hr>
 </ul
 </span>
 
-<img src="https://raw.githubusercontent.com/r-silver1/crypto_quotes/main/ex_img.PNG" alt="example output">
+
