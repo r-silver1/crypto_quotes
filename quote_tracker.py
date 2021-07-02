@@ -36,10 +36,16 @@ class PaprikaDAO:
         self.get_top_10()
 
     def init_coins_dict(self):
+        """init_coins_dict: get all the corresponding API specific ids for coins mapped to their symbols, i.e. BTC
+           Some coins, duplicate symbols, i.e. BTT for bittorrent and blocktrade. In case of such conflict the duplicate
+           will be appended to the list of coins using that symbol
+        """
         for c in self.client.coins():
-            # TODO: Issue here. need to be able to handle bad cases like BTT: bittorent and blocktrade... do tuple key name and symbol?
             if c['symbol'] not in self.coin_dict:
-                self.coin_dict[c['symbol']] = c['id']
+                self.coin_dict[c['symbol']] = [(c['id'], c['name'])]
+            else:
+                self.coin_dict[c['symbol']].append((c['id'], c['name']))
+
 
     def get_top_10(self):
         self.top = [c['symbol'] for c in self.client.coins()[:10]]
@@ -47,7 +53,18 @@ class PaprikaDAO:
     def retCoin(self, c_sym):
         if c_sym not in self.coin_dict:
             raise ValueError(f"Symbol {c_sym}: Not Recognized in API")
-        c_id = self.coin_dict[c_sym]
+        if len(self.coin_dict[c_sym]) == 1:
+            c_id = self.coin_dict[c_sym][0][0]
+        else:
+            name_list = [c_entry[1] for c_entry in self.coin_dict[c_sym]]
+            c_id = None
+            while c_id is None:
+                choice = input(f"Multiple entries for symbol. select: {' '.join(name_list)} ")
+                for i, e in enumerate(name_list):
+                    print(f"{e}, {i}")
+                    if e == choice:
+                        c_id = self.coin_dict[c_sym][i][0]
+
         c_ret = self.client.coin(c_id)
         c_ticker =  self.client.ticker(c_id)
         c_tech = c_ticker['quotes']['USD']
@@ -61,6 +78,7 @@ class PaprikaDAO:
                         c_tech['percent_change_30d'],
                         c_tech['percent_change_1y'])
         return coin_ret
+
 
 
 if __name__ == "__main__":
