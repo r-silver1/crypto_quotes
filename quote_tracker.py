@@ -37,7 +37,9 @@ class PaprikaDAO:
 
     def init_coins_dict(self):
         for c in self.client.coins():
-            self.coin_dict[c['symbol']] = c['id']
+            # TODO: Issue here. need to be able to handle bad cases like BTT: bittorent and blocktrade... do tuple key name and symbol?
+            if c['symbol'] not in self.coin_dict:
+                self.coin_dict[c['symbol']] = c['id']
 
     def get_top_10(self):
         self.top = [c['symbol'] for c in self.client.coins()[:10]]
